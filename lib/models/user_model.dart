@@ -9,9 +9,10 @@ class UserModel {
     required this.email,
   });
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "fullName": fullName,
-        "email": email,
-      };
+  Map<String, dynamic> toJson()=>{
+    "id": id,
+    "fullName": fullName,
+    "email": email,
+  };
+
 }
