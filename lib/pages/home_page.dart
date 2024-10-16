@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 
 class HomePage extends StatelessWidget {
-const HomePage({Key? key}): super(key: key);
+
+CollectionReference tasksReference = FirebaseFirestore.instance.collection('tasks');
+
+
 @override
 Widget build(BuildContext context) {
 return Scaffold(
@@ -17,7 +20,17 @@ body: Center(
     mainAxisAlignment: MainAxisAlignment.center ,
     children: [
       ElevatedButton(
-        onPressed: (){}, 
+        
+        onPressed: (){
+          tasksReference.get().then((value){
+            QuerySnapshot collection=value;
+            List<QueryDocumentSnapshot> docs = collection.docs;
+            QueryDocumentSnapshot doc = docs[0];
+            print(doc.id);
+            print(doc.data());
+          });
+        }, 
+
         child: Text("Obtener la data")
       )
     ],
