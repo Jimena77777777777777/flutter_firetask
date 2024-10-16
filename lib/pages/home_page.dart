@@ -34,7 +34,37 @@ body: Center(
         }, 
 
         child: Text("Obtener la data")
-      )
+      ),
+    
+      ElevatedButton(onPressed: (){
+
+        tasksReference .add(
+          {
+            "title":"Ir a comprar mangas puercos 2",
+            "description": "comprar coca cola"  
+
+          },
+          ).then(( DocumentReference value){
+            print(value.id);
+          }).catchError((error){
+            print("Ocurrio un error en el registro");
+          }).whenComplete((){
+            print("El registro ah terminado ");
+          });
+
+      },
+       child: Text("Agregar documento",
+       
+       ),
+       ),
+    
+      ElevatedButton(onPressed: (){
+
+      }, 
+      
+      child: Text("Actualizar documento",
+      ),
+      ),
     ],
   ),
 ),
