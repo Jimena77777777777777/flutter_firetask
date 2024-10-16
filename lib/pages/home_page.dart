@@ -9,9 +9,21 @@ const HomePage({Key? key}): super(key: key);
 Widget build(BuildContext context) {
 return Scaffold(
 appBar: AppBar(
-title: Text("Firebase Firestore"),
+title: Text("Firebase Firuwuwuestore"),
 ),
-// AppBar
-); // Scaffold
+
+body: Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center ,
+    children: [
+      ElevatedButton(
+        onPressed: (){}, 
+        child: Text("Obtener la data")
+      )
+    ],
+  ),
+),
+
+);
 }
 }
