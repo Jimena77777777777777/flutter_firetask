@@ -59,9 +59,23 @@ body: Center(
        ),
     
       ElevatedButton(onPressed: (){
-
-      }, 
-      
+        tasksReference
+        .doc("hx8sMt3tIjAZyIdVm5FQ")
+        .update(
+          {
+            "title": "Ir de paseo ",
+            "description":"Tenemos que salir muy temprano",
+          },
+          )
+        .catchError(
+          (error){
+            print(error);
+          }
+          ).whenComplete((){
+              print("Actualizacion terminada");
+          },
+          ) ;
+      },       
       child: Text("Actualizar documento",
       ),
       ),
