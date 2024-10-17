@@ -1,10 +1,10 @@
 import 'package:flutter_firebase/models/task_model.dart';
 import 'package:flutter_firebase/services/my_service_firestore.dart';
-import 'package:flutter_firebase/ui/general/colors.dart';
-import 'package:flutter_firebase/ui/widgets/button_normal_widget.dart';
-import 'package:flutter_firebase/ui/widgets/general_widgets.dart';
 import 'package:flutter_firebase/ui/widgets/textfield_normal_widget.dart';
 import 'package:flutter/material.dart';
+import '../general/colors.dart';
+import 'button_normal_widget.dart';
+import 'general_widgets.dart';
 
 class TaskFormWidget extends StatefulWidget {
   const TaskFormWidget({Key? key}) : super(key: key);
@@ -34,17 +34,17 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
       builder: (BuildContext context, Widget? widget) {
         return Theme(
           data: ThemeData.light().copyWith(
-              dialogBackgroundColor: Colors.white,
-              dialogTheme: DialogTheme(
-                elevation: 0,
-                backgroundColor: kBrandSecondaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
+            dialogBackgroundColor: Colors.white,
+            dialogTheme: DialogTheme(
+              elevation: 0,
+              backgroundColor: kBrandSecondaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
               ),
-              colorScheme: ColorScheme.light(
-                primary: kBrandPrimaryColor,
-              )),
+            ),
+            colorScheme: ColorScheme.dark(),
+            primaryColor: kBrandPrimaryColor,
+          ),
           child: widget!,
         );
       },
@@ -58,7 +58,6 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
 
   registerTask() {
     if (formKey.currentState!.validate()) {
-      //
       TaskModel taskModel = TaskModel(
         title: _titleController.text,
         description: _descriptionController.text,
@@ -68,13 +67,12 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
       );
       taskService.addTask(taskModel).then((value) {
         if (value.isNotEmpty) {
-          //
           Navigator.pop(context);
-          showSnackBarSuccess(context, "La tarea fue registrada cor éxito.");
+          showSnackBarSuccess(context, "La tarea fue registrada con éxito.");
         }
       }).catchError((error) {
-        //
-        showSnackBarError(context, "Hubo un incoveniente, inténtalo nuevamente");
+        showSnackBarError(
+            context, "Hubo un inconveniente, inténtalo nuevamente");
         Navigator.pop(context);
       });
     }
@@ -85,12 +83,9 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
     return Container(
       padding: const EdgeInsets.all(14.0),
       decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(22.0),
-          topRight: Radius.circular(22.0),
-        ),
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(22.0), topRight: Radius.circular(22.0))),
       child: Form(
         key: formKey,
         child: Column(
@@ -117,7 +112,7 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
               controller: _descriptionController,
             ),
             divider10(),
-            const Text("Categorías:"),
+            const Text("Categorías: "),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.start,
               runAlignment: WrapAlignment.start,
@@ -180,10 +175,10 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
             TextFieldNormalWidget(
               hintText: "Fecha",
               icon: Icons.date_range,
+              controller: _dateController,
               onTap: () {
                 showSelectDate();
               },
-              controller: _dateController,
             ),
             divider20(),
             ButtonNormalWidget(
