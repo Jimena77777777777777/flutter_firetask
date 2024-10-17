@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-Color primary = const Color(0xff2c3550);
-Color secondary = const Color(0xffF4F6FF);
+Color kBrandPrimaryColor = const Color(0xff2C3550);
+Color kBrandSecondaryColor = const Color(0xffF4F6FF);
 
 Map<String, Color> categoryColor = {
-  "Personal": Color(0xff6F42C1),
-  "Trabajo": Color(0xffF92AAD),
-  "Otro": Color(0xffF1DD5C),
+  "Personal": Color(0xff3E80FF),
+  "Trabajo": Color(0xffEF476F),
+  "Otro": Color(0xffFFC300),
 };

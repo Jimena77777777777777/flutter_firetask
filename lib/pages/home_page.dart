@@ -1,88 +1,76 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-
 class HomePage extends StatelessWidget {
+  // Referencia a la colección 'tasks'
+  CollectionReference tasksCollection =
+      FirebaseFirestore.instance.collection('tasks');
 
-CollectionReference tasksReference = FirebaseFirestore.instance.collection('tasks');
-
-
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-appBar: AppBar(
-title: Text("Firebase Firuwuwuestore"),
-),
-
-body: Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center ,
-    children: [
-      ElevatedButton(
-        
-        onPressed: (){
-          tasksReference.get().then((QuerySnapshot value){
-            
-            QuerySnapshot collection = value;
-            collection.docs.forEach((QueryDocumentSnapshot element){
-              Map <String, dynamic> myMap=element.data() as Map<String, dynamic>;
-              print(myMap["title"]);
-            }
-            );
-          });
-        }, 
-
-        child: Text("Obtener la data")
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Firebase Firestore"),
       ),
-    
-      ElevatedButton(onPressed: (){
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  // Obtener documentos de la colección
+                  QuerySnapshot querySnapshot = await tasksCollection.get();
 
-        tasksReference .add(
-          {
-            "title":"Ir a comprar mangas puercos 2",
-            "description": "comprar coca cola"  
+                  if (querySnapshot.docs.isNotEmpty) {
+                    // Crear una lista para almacenar los títulos y descripciones
+                    List<String> taskData = [];
 
-          },
-          ).then(( DocumentReference value){
-            print(value.id);
-          }).catchError((error){
-            print("Ocurrio un error en el registro");
-          }).whenComplete((){
-            print("El registro ah terminado ");
-          });
+                    // Iterar sobre los documentos y agregar los datos a la lista
+                    querySnapshot.docs.forEach((doc) {
+                      Map<String, dynamic> data =
+                          doc.data() as Map<String, dynamic>;
+                      String title = data['title'] ?? 'Sin título';
+                      String description =
+                          data['description'] ?? 'Sin descripción';
+                      taskData.add('Título: $title\nDescripción: $description');
+                    });
 
-      },
-       child: Text("Agregar documento",
-       
-       ),
-       ),
-    
-      ElevatedButton(onPressed: (){
-        tasksReference
-        .doc("hx8sMt3tIjAZyIdVm5FQ")
-        .update(
-          {
-            "title": "Ir de paseo ",
-            "description":"Tenemos que salir muy temprano",
-          },
-          )
-        .catchError(
-          (error){
-            print(error);
-          }
-          ).whenComplete((){
-              print("Actualizacion terminada");
-          },
-          ) ;
-      },       
-      child: Text("Actualizar documento",
+                    // Mostrar los datos en un cuadro de diálogo o en la pantalla
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Registros obtenidos"),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children:
+                                  taskData.map((task) => Text(task)).toList(),
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Cerrar"),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    print("No se encontraron documentos.");
+                  }
+                } catch (e) {
+                  print("Error obteniendo los documentos: $e");
+                }
+              },
+              child: Text("Obtener la data"),
+            )
+          ],
+        ),
       ),
-      ),
-    ],
-  ),
-),
-
-);
-}
+    );
+  }
 }
